@@ -1,4 +1,7 @@
-
+grafana
+prometheus
+!.gitignore
+!*.gitignore
 # Created by https://www.toptal.com/developers/gitignore/api/visualstudiocode,jetbrains+all,macos,dotenv
 # Edit at https://www.toptal.com/developers/gitignore?templates=visualstudiocode,jetbrains+all,macos,dotenv
 
