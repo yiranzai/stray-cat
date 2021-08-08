@@ -7,5 +7,6 @@ One-click installation monitoring system based on [prometheus](https://prometheu
 ## install
 
 ```sh
+cp .env.example .env
 ./install.sh
 ```
