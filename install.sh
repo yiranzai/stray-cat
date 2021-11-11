@@ -6,13 +6,14 @@ export $(xargs <.env)
 # done <.env
 
 getOption() {
-    return $((promethues_option & grafana_option & node_option))
+    return $((promethues_option & grafana_option & node_option & blackbox_option))
 }
 
 # option
 promethues_option=$((1 << 0))
 grafana_option=$((1 << 1))
 node_option=$((1 << 2))
+blackbox_option=$((1 << 3))
 
 defalut_option=getOption
 
@@ -22,6 +23,7 @@ base_path=$(pwd)
 prometheus_path="${base_path}/prometheus"
 grafana_path="${base_path}/grafana"
 node_path="${base_path}/exporters/node"
+blackbox_path="${base_path}/exporters/blackbox"
 
 resource_path="${base_path}/resources"
 log_path="${base_path}/log"
@@ -30,49 +32,57 @@ log_path="${base_path}/log"
 prometheus_pkg_name="prometheus-${STRAY_CAT_PROMETHEUS_VERSION}.linux-amd64.tar.gz"
 grafana_pkg_name="grafana-${STRAY_CAT_GRAFANA_VERSION}.linux-amd64.tar.gz"
 node_pkg_name="node_exporter-${STRAY_CAT_EXPORTER_NODE_VERSION}.linux-amd64.tar.gz"
+blackbox_pkg_name="blackbox_exporter-${STRAY_CAT_EXPORTER_BLACKBOX_VERSION}.linux-amd64.tar.gz"
 
 # pkg unpack name
 prometheus_unpack_name="prometheus-${STRAY_CAT_PROMETHEUS_VERSION}.linux-amd64"
 grafana_unpack_name="grafana-${STRAY_CAT_GRAFANA_VERSION}"
 node_unpack_name="node_exporter-${STRAY_CAT_EXPORTER_NODE_VERSION}.linux-amd64"
+blackbox_unpack_name="blackbox_exporter-${STRAY_CAT_EXPORTER_BLACKBOX_VERSION}.linux-amd64"
 
 # pkg resource dir name
 prometheus_resource_dir_name="$resource_path/$prometheus_unpack_name"
 grafana_resource_dir_name="$resource_path/$grafana_unpack_name"
 node_resource_dir_name="$resource_path/$node_unpack_name"
+blackbox_resource_dir_name="$resource_path/$blackbox_unpack_name"
 
 # download path
 prometheus_dl_path=https://github.com/prometheus/prometheus/releases/download/v${STRAY_CAT_PROMETHEUS_VERSION}/${prometheus_pkg_name}
 grafana_dl_path=https://dl.grafana.com/oss/release/${grafana_pkg_name}
 node_dl_path=https://github.com/prometheus/node_exporter/releases/download/v${STRAY_CAT_EXPORTER_NODE_VERSION}/${node_pkg_name}
+blackbox_dl_path=https://github.com/prometheus/blackbox_exporter/releases/download/v${STRAY_CAT_EXPORTER_BLACKBOX_VERSION}/${blackbox_pkg_name}
 
 # bin path
 prometheus_bin_path="$prometheus_path"
 grafana_bin_path="$grafana_path/bin"
 node_bin_path="$node_path"
+blackbox_bin_path="$blackbox_path"
 
 # bin file
 prometheus_bin_file="$prometheus_bin_path/prometheus"
 grafana_bin_file="$grafana_bin_path/grafana-server"
 node_bin_file="$node_bin_path/node_exporter"
+blackbox_bin_file="$blackbox_bin_path/blackbox_exporter"
 
 # file name
 prometheus_file_name="$resource_path/$prometheus_pkg_name"
 grafana_file_name="$resource_path/$grafana_pkg_name"
 node_file_name="$resource_path/$node_pkg_name"
+blackbox_file_name="$resource_path/$blackbox_pkg_name"
 
 # config file path
 prometheus_config_path="${base_path}/$STRAY_CAT_PROMETHEUS_CONFIG"
 
 initEnv() {
     getOption() {
-        return $((promethues_option & grafana_option & node_option))
+        return $((promethues_option & grafana_option & node_option & blackbox_option))
     }
 
     # option
     promethues_option=$((1 << 0))
     grafana_option=$((1 << 1))
     node_option=$((1 << 2))
+    blackbox_option=$((1 << 3))
 
     defalut_option=getOption
 
@@ -82,6 +92,7 @@ initEnv() {
     prometheus_path="${base_path}/prometheus"
     grafana_path="${base_path}/grafana"
     node_path="${base_path}/exporters/node"
+    blackbox_path="${base_path}/exporters/blackbox"
 
     resource_path="${base_path}/resources"
     log_path="${base_path}/log"
@@ -90,36 +101,43 @@ initEnv() {
     prometheus_pkg_name="prometheus-${STRAY_CAT_PROMETHEUS_VERSION}.linux-amd64.tar.gz"
     grafana_pkg_name="grafana-${STRAY_CAT_GRAFANA_VERSION}.linux-amd64.tar.gz"
     node_pkg_name="node_exporter-${STRAY_CAT_EXPORTER_NODE_VERSION}.linux-amd64.tar.gz"
+    blackbox_pkg_name="blackbox_exporter-${STRAY_CAT_EXPORTER_BLACKBOX_VERSION}.linux-amd64.tar.gz"
 
     # pkg unpack name
     prometheus_unpack_name="prometheus-${STRAY_CAT_PROMETHEUS_VERSION}.linux-amd64"
     grafana_unpack_name="grafana-${STRAY_CAT_GRAFANA_VERSION}"
     node_unpack_name="node_exporter-${STRAY_CAT_EXPORTER_NODE_VERSION}.linux-amd64"
+    blackbox_unpack_name="blackbox_exporter-${STRAY_CAT_EXPORTER_BLACKBOX_VERSION}.linux-amd64"
 
     # pkg resource dir name
     prometheus_resource_dir_name="$resource_path/$prometheus_unpack_name"
     grafana_resource_dir_name="$resource_path/$grafana_unpack_name"
     node_resource_dir_name="$resource_path/$node_unpack_name"
+    blackbox_resource_dir_name="$resource_path/$blackbox_unpack_name"
 
     # download path
     prometheus_dl_path=https://github.com/prometheus/prometheus/releases/download/v${STRAY_CAT_PROMETHEUS_VERSION}/${prometheus_pkg_name}
     grafana_dl_path=https://dl.grafana.com/oss/release/${grafana_pkg_name}
     node_dl_path=https://github.com/prometheus/node_exporter/releases/download/v${STRAY_CAT_EXPORTER_NODE_VERSION}/${node_pkg_name}
+    blackbox_dl_path=https://github.com/prometheus/blackbox_exporter/releases/download/v${STRAY_CAT_EXPORTER_BLACKBOX_VERSION}/${blackbox_pkg_name}
 
     # bin path
     prometheus_bin_path="$prometheus_path"
     grafana_bin_path="$grafana_path/bin"
     node_bin_path="$node_path"
+    blackbox_bin_path="$blackbox_path"
 
     # bin file
     prometheus_bin_file="$prometheus_bin_path/prometheus"
     grafana_bin_file="$grafana_bin_path/grafana-server"
     node_bin_file="$node_bin_path/node_exporter"
+    blackbox_bin_file="$blackbox_bin_path/blackbox_exporter"
 
     # file name
     prometheus_file_name="$resource_path/$prometheus_pkg_name"
     grafana_file_name="$resource_path/$grafana_pkg_name"
     node_file_name="$resource_path/$node_pkg_name"
+    blackbox_file_name="$resource_path/$blackbox_pkg_name"
 
     # config file path
     prometheus_config_path="${base_path}/$STRAY_CAT_PROMETHEUS_CONFIG"
@@ -208,7 +226,25 @@ downloaNode() {
     # curl -s -o "$node_file_name" "$node_dl_path"
 }
 
+installBlackbox() {
+    echo "$blackbox_file_name will install"
+    if [ ! -f "$blackbox_file_name" ]; then
+        downloaBlackbox
+    else
+        echo "$blackbox_file_name is exits"
+    fi
+    tar -zxvf "$blackbox_file_name" -C "$resource_path" >/dev/null
+    ln -s "$blackbox_resource_dir_name" "$blackbox_path"
+}
+
+downloaBlackbox() {
+    echo "download $blackbox_file_name"
+    wget -O "$blackbox_file_name" "$blackbox_dl_path"
+    # curl -s -o "$blackbox_file_name" "$blackbox_dl_path"
+}
+
 node_pid=1
+blackbox_pid=1
 
 runNode() {
     echo "run node ${node_bin_file}"
@@ -217,6 +253,15 @@ runNode() {
         echo $!
     )
     echo "run node $node_pid"
+}
+
+runBlackbox() {
+    echo "run blackbox ${blackbox_bin_file}"
+    blackbox_pid=$(
+        nohup "${blackbox_bin_file}" >"${log_path}/blackbox.log" 2>&1 &
+        echo $!
+    )
+    echo "run blackbox $blackbox_pid"
 }
 
 pidIsRunning() {
@@ -239,6 +284,7 @@ cleanEnv() {
     killProcess "prometheus"
     killProcess "grafana"
     killProcess "node_exporter"
+    killProcess "blackbox_exporter"
 
     echo "check $prometheus_path"
     if [ -d "$prometheus_path" ]; then
@@ -256,6 +302,13 @@ cleanEnv() {
     if [ -d "$node_path" ]; then
         rm -rf "$node_path"
         echo "rm $node_path"
+
+    fi
+
+    echo "check $blackbox_path"
+    if [ -d "$blackbox_path" ]; then
+        rm -rf "$blackbox_path"
+        echo "rm $blackbox_path"
     fi
 
     echo "check resource $prometheus_resource_dir_name"
@@ -276,37 +329,52 @@ cleanEnv() {
         rm -rf "$node_resource_dir_name"
     fi
 
+    echo "check resource $blackbox_resource_dir_name"
+    if [ -d "$blackbox_resource_dir_name" ]; then
+        echo "rm resource $blackbox_resource_dir_name"
+        rm -rf "$blackbox_resource_dir_name"
+    fi
+
     unset promethues_option
     unset grafana_option
     unset node_option
+    unset blackbox_option
     unset defalut_option
     unset base_path
     unset prometheus_path
     unset grafana_path
     unset node_path
+    unset blackbox_path
     unset resource_path
     unset log_path
     unset prometheus_pkg_name
     unset grafana_pkg_name
     unset node_pkg_name
+    unset blackbox_pkg_name
     unset prometheus_unpack_name
     unset grafana_unpack_name
     unset node_unpack_name
+    unset blackbox_unpack_name
     unset prometheus_resource_dir_name
     unset grafana_resource_dir_name
     unset node_resource_dir_name
+    unset blackbox_resource_dir_name
     unset prometheus_dl_path
     unset grafana_dl_path
     unset node_dl_path
+    unset blackbox_dl_path
     unset prometheus_bin_path
     unset grafana_bin_path
     unset node_bin_path
+    unset blackbox_bin_path
     unset prometheus_bin_file
     unset grafana_bin_file
     unset node_bin_file
+    unset blackbox_bin_file
     unset prometheus_file_name
     unset grafana_file_name
     unset node_file_name
+    unset blackbox_file_name
     unset prometheus_config_path
 }
 
@@ -319,6 +387,8 @@ checkPid() {
     pidIsRunning "$grafana_pid"
     echo "check node_exporter"
     pidIsRunning "$node_pid"
+    echo "check blackbox_exporter"
+    pidIsRunning "$blackbox_pid"
 }
 
 ######################end##########################
@@ -330,9 +400,11 @@ initEnv
 installGrafana
 installPrometheus
 installNode
+installBlackbox
 
 runPrometheus
 runGrafana
 runNode
+runBlackbox
 
 checkPid
