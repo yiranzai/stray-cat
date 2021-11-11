@@ -72,6 +72,7 @@ blackbox_file_name="$resource_path/$blackbox_pkg_name"
 
 # config file path
 prometheus_config_path="${base_path}/$STRAY_CAT_PROMETHEUS_CONFIG"
+blackbox_config_path="${base_path}/$STRAY_CAT_BLACKBOX_CONFIG"
 
 initEnv() {
     getOption() {
@@ -258,7 +259,7 @@ runNode() {
 runBlackbox() {
     echo "run blackbox ${blackbox_bin_file}"
     blackbox_pid=$(
-        nohup "${blackbox_bin_file}" >"${log_path}/blackbox.log" 2>&1 &
+        nohup "${blackbox_bin_file}" --config.file="$blackbox_config_path" >"${log_path}/blackbox.log" 2>&1 &
         echo $!
     )
     echo "run blackbox $blackbox_pid"
